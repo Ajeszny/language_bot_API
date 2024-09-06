@@ -40,7 +40,7 @@ namespace quadrolingoAPI.Migrations
 
                     b.HasIndex("USER_IDId");
 
-                    b.ToTable("Exercises");
+                    b.ToTable("Exercises", (string)null);
                 });
 
             modelBuilder.Entity("quadrolingoAPI.Models.Language", b =>
@@ -54,7 +54,7 @@ namespace quadrolingoAPI.Migrations
 
                     b.HasKey("LANG_CODE");
 
-                    b.ToTable("Languages");
+                    b.ToTable("Languages", (string)null);
                 });
 
             modelBuilder.Entity("quadrolingoAPI.Models.User", b =>
@@ -94,7 +94,7 @@ namespace quadrolingoAPI.Migrations
 
                     b.HasIndex("STUDY_LANGLANG_CODE");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("quadrolingoAPI.Models.UserWord", b =>
@@ -120,7 +120,7 @@ namespace quadrolingoAPI.Migrations
 
                     b.HasIndex("WORD_IDId");
 
-                    b.ToTable("UserWords");
+                    b.ToTable("UserWords", (string)null);
                 });
 
             modelBuilder.Entity("quadrolingoAPI.Models.Word", b =>
@@ -145,7 +145,7 @@ namespace quadrolingoAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Words");
+                    b.ToTable("Words", (string)null);
                 });
 
             modelBuilder.Entity("quadrolingoAPI.Models.WordExercise", b =>
@@ -171,7 +171,7 @@ namespace quadrolingoAPI.Migrations
 
                     b.HasIndex("WORD_IDId");
 
-                    b.ToTable("WordExercises");
+                    b.ToTable("WordExercises", (string)null);
                 });
 
             modelBuilder.Entity("quadrolingoAPI.Models.Exercise", b =>
