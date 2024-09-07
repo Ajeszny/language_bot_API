@@ -24,8 +24,15 @@ namespace quadrolingoAPI.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers(string? name)
         {
+            var result = await _context.Users.ToListAsync();
+            if (name != null)
+            {
+                result = (from user in result
+                         where user.USERNAME.Contains(name)
+                         select user).ToList();
+            }
             return await _context.Users.ToListAsync();
         }
 
