@@ -96,7 +96,7 @@ namespace quadrolingoAPI.Controllers
             {
                 string kok = "";
                 kok += e.TIMESTAMP + " Всего слов:";
-                int total, guessed;
+                int total, guessed, knownbefore;
                 var words = from we in _context.WordExercises
                             where we.EXERCISE_ID == e
                             select we;
@@ -105,7 +105,11 @@ namespace quadrolingoAPI.Controllers
                         where we.EXERCISE_ID == e && we.Guessed
                         select we;
                 guessed = words.Count();
-                kok += total + " Угадал:" + guessed;
+                var kb = from uw in _context.UserWords
+                        where uw.TIMESTAMP < e.TIMESTAMP
+                        select uw;
+                knownbefore = kb.Count();
+                kok += total + " Угадал:" + guessed + "Слов известно до упражнения: " + knownbefore;
                 results.Add(kok);
             }
 
