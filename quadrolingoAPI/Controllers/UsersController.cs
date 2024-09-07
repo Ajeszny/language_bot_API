@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace quadrolingoAPI.Controllers
         }
 
         // GET: api/Users
+        [EnableCors]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -28,7 +30,8 @@ namespace quadrolingoAPI.Controllers
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}")]
+        [EnableCors]
+        [HttpGet("{id}/profile")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -41,9 +44,29 @@ namespace quadrolingoAPI.Controllers
             return user;
         }
 
+        [EnableCors]
+        [HttpGet("{id}/known_words")]
+        public async Task<ActionResult<User>> GetKnownWords(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var results = from uw in _context.UserWords
+                          where uw.USER_ID.Id == id
+                          select uw;
+
+
+            return user;
+        }
+
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [EnableCors]
+        [HttpPut("{id}/profile")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.Id)
@@ -74,9 +97,14 @@ namespace quadrolingoAPI.Controllers
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [EnableCors]
+        [HttpPost("profile")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            Language BASE = await _context.Languages.FindAsync(user.BASE_LANG.LANG_CODE);
+            Language STUDY = await _context.Languages.FindAsync(user.STUDY_LANG.LANG_CODE);
+            user.BASE_LANG = BASE;
+            user.STUDY_LANG = STUDY;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -84,6 +112,7 @@ namespace quadrolingoAPI.Controllers
         }
 
         // DELETE: api/Users/5
+        [EnableCors]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace quadrolingoAPI.Controllers
 
         // GET: api/Languages
         [HttpGet]
+        [EnableCors]
         public async Task<ActionResult<IEnumerable<Language>>> GetLanguages()
         {
             return await _context.Languages.ToListAsync();
@@ -29,6 +31,7 @@ namespace quadrolingoAPI.Controllers
 
         // GET: api/Languages/5
         [HttpGet("{id}")]
+        [EnableCors]
         public async Task<ActionResult<Language>> GetLanguage(string id)
         {
             var language = await _context.Languages.FindAsync(id);
@@ -45,6 +48,7 @@ namespace quadrolingoAPI.Controllers
         // POST: api/Languages
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [EnableCors]
         public async Task<ActionResult<Language>> PostLanguage(Language language)
         {
             _context.Languages.Add(language);
