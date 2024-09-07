@@ -23,7 +23,6 @@ namespace quadrolingoAPI.Controllers
         }
 
         // GET: api/Users
-        [EnableCors]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -31,7 +30,6 @@ namespace quadrolingoAPI.Controllers
         }
 
         // GET: api/Users/5
-        [EnableCors]
         [HttpGet("{id}/profile")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
@@ -45,7 +43,6 @@ namespace quadrolingoAPI.Controllers
             return user;
         }
 
-        [EnableCors]
         [HttpGet("{id}/known_words")]
 
         //untested
@@ -74,7 +71,6 @@ namespace quadrolingoAPI.Controllers
             return m;
         }
 
-        [EnableCors]
         [HttpGet("{id}/progress")]
 
         //untested
@@ -110,7 +106,6 @@ namespace quadrolingoAPI.Controllers
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [EnableCors]
         [HttpPut("{id}/profile")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
@@ -142,7 +137,6 @@ namespace quadrolingoAPI.Controllers
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [EnableCors]
         [HttpPost("profile")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
@@ -157,7 +151,6 @@ namespace quadrolingoAPI.Controllers
         }
 
         // DELETE: api/Users/5
-        [EnableCors]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
