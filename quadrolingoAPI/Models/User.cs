@@ -8,7 +8,7 @@
         public string USERNAME { get; set; }
         public string FIRST_NAME { get; set; }
         public string? LAST_NAME { get; set;}
-        public Language BASE_LANG { get; set; }
-        public Language STUDY_LANG { get; set;}
+        public string BASE_LANG { get; set; }
+        public string STUDY_LANG { get; set;}
     }
 }

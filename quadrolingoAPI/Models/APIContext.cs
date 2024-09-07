@@ -12,7 +12,7 @@ namespace quadrolingoAPI.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Exercise> Exercises { get; set; } = null!;

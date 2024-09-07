@@ -52,7 +52,7 @@ namespace quadrolingoAPI.Controllers
 
         [HttpGet("{id}/known_words")]
 
-        //untested
+        //works
         public async Task<ActionResult<Dictionary<string, string>>> GetKnownWords(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -72,7 +72,7 @@ namespace quadrolingoAPI.Controllers
             foreach (var item in list)
             {
                 var tr = JsonSerializer.Deserialize<Dictionary<string, string[]>>(item.WORD_TRANSLATION);
-                m.Add(item.WORD_BASE, tr[user.STUDY_LANG.LANG_CODE][0]);
+                m.Add(item.WORD_BASE, tr[user.STUDY_LANG][0]);
             }
 
             return m;
@@ -80,8 +80,8 @@ namespace quadrolingoAPI.Controllers
 
         [HttpGet("{id}/progress")]
 
-        //untested
-        public async Task<ActionResult<string[]>> GetProgress(int id)
+        //works
+        public async Task<ActionResult<List<string>>> GetProgress(int id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -91,11 +91,11 @@ namespace quadrolingoAPI.Controllers
             }
 
             var exercises = await _context.Exercises.ToListAsync();
-            string[] results = [];
+            List<string> results = [];
             foreach (var e in exercises)
             {
-                results.Append("");
-                results[results.Length - 1] += e.TIMESTAMP + " Всего слов:";
+                string kok = "";
+                kok += e.TIMESTAMP + " Всего слов:";
                 int total, guessed;
                 var words = from we in _context.WordExercises
                             where we.EXERCISE_ID == e
@@ -105,7 +105,8 @@ namespace quadrolingoAPI.Controllers
                         where we.EXERCISE_ID == e && we.Guessed
                         select we;
                 guessed = words.Count();
-                results[results.Length - 1] += total + " Угадал:" + guessed;
+                kok += total + " Угадал:" + guessed;
+                results.Add(kok);
             }
 
             return results;
