@@ -20,6 +20,7 @@ namespace quadrolingoAPI
 
             app.UseAuthorization();
 
+            app.UseCors();
 
             app.MapControllers();
 

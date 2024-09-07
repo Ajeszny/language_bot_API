@@ -10,6 +10,11 @@ namespace quadrolingoAPI.Models
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+        }
+
         public DbSet<Exercise> Exercises { get; set; } = null!;
         public DbSet<Language> Languages { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;

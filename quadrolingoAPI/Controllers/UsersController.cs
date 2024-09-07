@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -46,7 +47,9 @@ namespace quadrolingoAPI.Controllers
 
         [EnableCors]
         [HttpGet("{id}/known_words")]
-        public async Task<ActionResult<User>> GetKnownWords(int id)
+
+        //untested
+        public async Task<ActionResult<Dictionary<string, string>>> GetKnownWords(int id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -57,10 +60,52 @@ namespace quadrolingoAPI.Controllers
 
             var results = from uw in _context.UserWords
                           where uw.USER_ID.Id == id
-                          select uw;
+                          select uw.WORD_ID;
 
+            var list = await results.ToListAsync();
+            Dictionary<string, string> m = new Dictionary<string, string>();
+            
+            foreach (var item in list)
+            {
+                var tr = JsonSerializer.Deserialize<Dictionary<string, string[]>>(item.WORD_TRANSLATION);
+                m.Add(item.WORD_BASE, tr[user.STUDY_LANG.LANG_CODE][0]);
+            }
 
-            return user;
+            return m;
+        }
+
+        [EnableCors]
+        [HttpGet("{id}/progress")]
+
+        //untested
+        public async Task<ActionResult<string[]>> GetProgress(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var exercises = await _context.Exercises.ToListAsync();
+            string[] results = [];
+            foreach (var e in exercises)
+            {
+                results.Append("");
+                results[results.Length - 1] += e.TIMESTAMP + " Всего слов:";
+                int total, guessed;
+                var words = from we in _context.WordExercises
+                            where we.EXERCISE_ID == e
+                            select we;
+                total = words.Count();
+                words = from we in _context.WordExercises
+                        where we.EXERCISE_ID == e && we.Guessed
+                        select we;
+                guessed = words.Count();
+                results[results.Length - 1] += total + " Угадал:" + guessed;
+            }
+
+            return results;
         }
 
         // PUT: api/Users/5
@@ -101,10 +146,10 @@ namespace quadrolingoAPI.Controllers
         [HttpPost("profile")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            Language BASE = await _context.Languages.FindAsync(user.BASE_LANG.LANG_CODE);
-            Language STUDY = await _context.Languages.FindAsync(user.STUDY_LANG.LANG_CODE);
-            user.BASE_LANG = BASE;
-            user.STUDY_LANG = STUDY;
+            //Language BASE = await _context.Languages.FindAsync(user.BASE_LANG.LANG_CODE);
+            //Language STUDY = await _context.Languages.FindAsync(user.STUDY_LANG.LANG_CODE);
+            //user.BASE_LANG = BASE;
+            //user.STUDY_LANG = STUDY;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
